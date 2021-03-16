@@ -1,27 +1,9 @@
 package edu.denev;
 
-class Node<T>
-{
-	T data;
-	Node<T> next;
-	
-	public Node(T data, Node<T> next)
-	{
-		this.data = data;
-		this.next = next;
-	}
-	
-	public Node(T data)
-	{
-		this.data = data;
-		this.next = null;
-	}
-}
-
 public class LinkedList<T> implements List<T>
 {
-	Node<T> linkedList;
-	int index;
+	private Node<T> linkedList;
+	private int index;
 	
 	public LinkedList(Node<T> linkedList, int index)
 	{
@@ -32,6 +14,11 @@ public class LinkedList<T> implements List<T>
 	public LinkedList()
 	{
 		this.index = 0;
+	}
+	
+	public int getIndex()
+	{
+		return this.index;
 	}
 	
 	@Override
@@ -59,7 +46,20 @@ public class LinkedList<T> implements List<T>
 	@Override
 	public void add(T item) 
 	{
-		this.linkedList = new Node<T>(item, this.linkedList);
+		Node<T> newItem = new Node<>(item);
+		if(this.isEmpty())
+		{
+			this.linkedList = newItem;
+		}
+		else
+		{
+			Node<T> temp = this.linkedList;
+			while(temp.next != null)
+			{
+				temp = temp.next;
+			}
+			temp.next = newItem;
+		}
 		this.index++;
 	}
 
@@ -86,9 +86,25 @@ public class LinkedList<T> implements List<T>
 	}
 
 	@Override
-	public void removeFrom(int index) {
-		// TODO Auto-generated method stub
-		
+	public void removeFrom(int index) 
+	{
+		if(index == 0)
+		{
+			this.linkedList = linkedList.next;
+		}
+		else
+		{
+			Node<T> temp = linkedList;
+			int count = 0;
+			while(count < index - 1)
+			{
+				temp = temp.next;
+				count++;
+			}
+			Node<T> removedItem = temp.next;
+			temp = removedItem.next;
+		}
+		this.index--;
 	}
 
 	@Override
@@ -99,9 +115,14 @@ public class LinkedList<T> implements List<T>
 	}
 
 	@Override
-	public T get(int index) {
-		// TODO Auto-generated method stub
-		return null;
+	public T get(int index) 
+	{
+		Node<T> a = linkedList;
+		for(int i=0; i < index; i++)
+		{
+			a = a.next;
+		}
+		return a.data;
 	}
 
 	@Override
